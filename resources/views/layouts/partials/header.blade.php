@@ -47,10 +47,10 @@
       <div class="header-navbar">
         <div class="header-brand">
           <a href="/" class="logo logo-dark">
-            <img src="assets/images/logo/logo.png" alt="Site Logo">
+            <img src="{{ asset('assets/images/logo/logo.png') }}" alt="Site Logo">
           </a>
           <a href="/" class="logo logo-light">
-            <img src="assets/images/logo/logo-light.png" alt="Site Logo">
+            <img src="{{ asset('assets/images/logo/logo-light.png') }}" alt="Site Logo">
           </a>
         </div>
         <div class="header-main-nav">

@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 class AccountController extends Controller
 {
   public function profile () {
-    return view('pages.account');
+    $breadcrumbs = [
+      ['url' => '#', 'label' => 'Contact'],
+    ];
+
+    return view('pages.account.account', [
+      'breadcrumbs' => $breadcrumbs
+    ]);
   }
 }

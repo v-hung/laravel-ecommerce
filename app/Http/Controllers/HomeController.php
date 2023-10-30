@@ -12,7 +12,6 @@ class HomeController extends Controller
 
   public function about () {
     $breadcrumbs = [
-      ['url' => '/', 'label' => 'Home'],
       ['url' => '#', 'label' => 'About'],
     ];
     return view('pages.about', [
@@ -22,7 +21,6 @@ class HomeController extends Controller
 
   public function contact () {
     $breadcrumbs = [
-      ['url' => '/', 'label' => 'Home'],
       ['url' => '#', 'label' => 'Contact'],
     ];
 

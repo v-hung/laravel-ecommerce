@@ -5,16 +5,26 @@
         <div class="col-lg-6 col-md-8">
           <div class="inner">
             <ul class="axil-breadcrumb">
+              <li class="axil-breadcrumb-item">
+                <a href="{{ route('home') }}">Home</a>
+              </li>
+              <li li class="separator"></li>
               @foreach ($breadcrumbs as $key => $breadcrumb)
-                <li class="axil-breadcrumb-item">
-                  <a href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['label'] }}</a>
+                <li class="axil-breadcrumb-item @if($key == count($breadcrumbs) - 1) active @endif">
+                  @if ($key < count($breadcrumbs) - 1 && array_key_exists('url', $breadcrumb) )
+                    <a href="{{ $breadcrumb['url'] }}">
+                  @endif
+                    {{ $breadcrumb['label'] }}
+                  @if ($key < count($breadcrumbs) - 1 && array_key_exists('url', $breadcrumb) )
+                    </a>
+                  @endif
                 </li>
                 @if ($key < count($breadcrumbs) - 1)
                   <li li class="separator"></li>
                 @endif
               @endforeach
             </ul>
-            <h1 class="title">{{$breadcrumb['label']}}</h1>
+            <h1 class="title">{{ $breadcrumb['title'] ?? $breadcrumb['label'] }}</h1>
           </div>
         </div>
         <div class="col-lg-6 col-md-4">

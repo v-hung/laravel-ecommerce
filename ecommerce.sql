@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 28, 2023 at 10:14 AM
+-- Generation Time: Oct 30, 2023 at 10:27 AM
 -- Server version: 11.0.3-MariaDB-log
 -- PHP Version: 8.0.30
 
@@ -81,9 +81,10 @@ CREATE TABLE `collections` (
   `id` int(10) UNSIGNED NOT NULL,
   `title` varchar(255) NOT NULL,
   `slug` varchar(255) NOT NULL,
-  `descriptio` text DEFAULT NULL,
+  `description` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -167,7 +168,26 @@ INSERT INTO `data_rows` (`id`, `data_type_id`, `field`, `type`, `display_name`, 
 (52, 6, 'status', 'select_dropdown', 'Status', 1, 1, 1, 1, 1, 1, '{\"default\":\"INACTIVE\",\"options\":{\"INACTIVE\":\"INACTIVE\",\"ACTIVE\":\"ACTIVE\"}}', 9),
 (53, 6, 'created_at', 'timestamp', 'Created At', 1, 1, 1, 0, 0, 0, NULL, 10),
 (54, 6, 'updated_at', 'timestamp', 'Updated At', 1, 0, 0, 0, 0, 0, NULL, 11),
-(55, 6, 'image', 'image', 'Page Image', 0, 1, 1, 1, 1, 1, NULL, 12);
+(55, 6, 'image', 'image', 'Page Image', 0, 1, 1, 1, 1, 1, NULL, 12),
+(56, 7, 'id', 'text', 'Id', 1, 0, 0, 0, 0, 0, '{}', 1),
+(57, 7, 'title', 'text', 'Tiêu đề', 1, 1, 1, 1, 1, 1, '{}', 2),
+(58, 7, 'slug', 'text', 'Slug', 1, 1, 1, 1, 1, 1, '{\"slugify\":{\"origin\":\"title\",\"forceUpdate\":true},\"validation\":{\"rule\":\"unique:collections,slug\"}}', 3),
+(60, 7, 'created_at', 'timestamp', 'Created At', 0, 1, 1, 1, 0, 1, '{}', 6),
+(61, 7, 'updated_at', 'timestamp', 'Updated At', 0, 0, 0, 0, 0, 0, '{}', 7),
+(62, 7, 'description', 'rich_text_box', 'Mô tả', 0, 1, 1, 1, 1, 1, '{}', 4),
+(63, 7, 'image', 'image', 'Ảnh', 0, 1, 1, 1, 1, 1, '{}', 5),
+(64, 8, 'id', 'text', 'Id', 1, 0, 0, 0, 0, 0, '{}', 1),
+(65, 8, 'title', 'text', 'Tên sản phẩm', 1, 1, 1, 1, 1, 1, '{}', 2),
+(66, 8, 'slug', 'text', 'Slug', 1, 0, 1, 1, 1, 1, '{\"slugify\":{\"origin\":\"title\",\"forceUpdate\":true},\"validation\":{\"rule\":\"unique:products,slug\"}}', 3),
+(67, 8, 'description', 'text', 'Mô tả', 0, 0, 1, 1, 1, 1, '{}', 4),
+(68, 8, 'media', 'media_picker', 'Ảnh', 0, 1, 1, 1, 1, 1, '{}', 5),
+(69, 8, 'price', 'number', 'Giá', 0, 1, 1, 1, 1, 1, '{}', 6),
+(70, 8, 'compare_at_price', 'number', 'Giá gốc (để cao hơn giá)', 0, 1, 1, 1, 1, 1, '{}', 7),
+(71, 8, 'status', 'select_dropdown', 'Status', 0, 1, 1, 1, 1, 1, '{\"default\":\"active\",\"options\":{\"active\":\"Ho\\u1ea1t \\u0111\\u1ed9ng\",\"draft\":\"B\\u1ea3n nh\\u00e1p\"}}', 12),
+(72, 8, 'created_at', 'timestamp', 'Created At', 0, 1, 1, 1, 0, 1, '{}', 10),
+(73, 8, 'updated_at', 'timestamp', 'Updated At', 0, 0, 0, 0, 0, 0, '{}', 11),
+(74, 8, 'product_belongstomany_collection_relationship', 'relationship', 'Danh mục sản phẩm', 0, 1, 1, 1, 1, 1, '{\"model\":\"App\\\\Models\\\\Collection\",\"table\":\"collections\",\"type\":\"belongsToMany\",\"column\":\"id\",\"key\":\"id\",\"label\":\"title\",\"pivot_table\":\"pivot_product_collection\",\"pivot\":\"1\",\"taggable\":\"0\"}', 8),
+(75, 8, 'product_belongstomany_tag_relationship', 'relationship', 'Thẻ', 0, 1, 1, 1, 1, 1, '{\"model\":\"App\\\\Models\\\\Tag\",\"table\":\"tags\",\"type\":\"belongsToMany\",\"column\":\"id\",\"key\":\"id\",\"label\":\"title\",\"pivot_table\":\"pivot_tag_product\",\"pivot\":\"1\",\"taggable\":\"on\"}', 9);
 
 -- --------------------------------------------------------
 
@@ -203,7 +223,9 @@ INSERT INTO `data_types` (`id`, `name`, `slug`, `display_name_singular`, `displa
 (3, 'roles', 'roles', 'Role', 'Roles', 'voyager-lock', 'TCG\\Voyager\\Models\\Role', NULL, 'TCG\\Voyager\\Http\\Controllers\\VoyagerRoleController', '', 1, 0, NULL, '2023-10-27 23:44:30', '2023-10-27 23:44:30'),
 (4, 'categories', 'categories', 'Category', 'Categories', 'voyager-categories', 'TCG\\Voyager\\Models\\Category', NULL, '', '', 1, 0, NULL, '2023-10-27 23:44:31', '2023-10-27 23:44:31'),
 (5, 'posts', 'posts', 'Post', 'Posts', 'voyager-news', 'TCG\\Voyager\\Models\\Post', 'TCG\\Voyager\\Policies\\PostPolicy', '', '', 1, 0, NULL, '2023-10-27 23:44:31', '2023-10-27 23:44:31'),
-(6, 'pages', 'pages', 'Page', 'Pages', 'voyager-file-text', 'TCG\\Voyager\\Models\\Page', NULL, '', '', 1, 0, NULL, '2023-10-27 23:44:31', '2023-10-27 23:44:31');
+(6, 'pages', 'pages', 'Page', 'Pages', 'voyager-file-text', 'TCG\\Voyager\\Models\\Page', NULL, '', '', 1, 0, NULL, '2023-10-27 23:44:31', '2023-10-27 23:44:31'),
+(7, 'collections', 'collections', 'Danh mục sản phẩm', 'Danh mục sản phẩm', 'voyager-shop', 'App\\Models\\Collection', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null,\"scope\":null}', '2023-10-30 03:14:00', '2023-10-30 03:16:17'),
+(8, 'products', 'products', 'Sản phẩm', 'Sản phẩm', 'voyager-hotdog', 'App\\Models\\Product', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null,\"scope\":null}', '2023-10-30 03:19:40', '2023-10-30 03:26:25');
 
 -- --------------------------------------------------------
 
@@ -269,18 +291,22 @@ CREATE TABLE `menu_items` (
 
 INSERT INTO `menu_items` (`id`, `menu_id`, `title`, `url`, `target`, `icon_class`, `color`, `parent_id`, `order`, `created_at`, `updated_at`, `route`, `parameters`) VALUES
 (1, 1, 'Dashboard', '', '_self', 'voyager-boat', NULL, NULL, 1, '2023-10-27 23:44:30', '2023-10-27 23:44:30', 'voyager.dashboard', NULL),
-(2, 1, 'Media', '', '_self', 'voyager-images', NULL, NULL, 5, '2023-10-27 23:44:30', '2023-10-27 23:44:30', 'voyager.media.index', NULL),
-(3, 1, 'Users', '', '_self', 'voyager-person', NULL, NULL, 3, '2023-10-27 23:44:30', '2023-10-27 23:44:30', 'voyager.users.index', NULL),
-(4, 1, 'Roles', '', '_self', 'voyager-lock', NULL, NULL, 2, '2023-10-27 23:44:30', '2023-10-27 23:44:30', 'voyager.roles.index', NULL),
-(5, 1, 'Tools', '', '_self', 'voyager-tools', NULL, NULL, 9, '2023-10-27 23:44:30', '2023-10-27 23:44:30', NULL, NULL),
-(6, 1, 'Menu Builder', '', '_self', 'voyager-list', NULL, 5, 10, '2023-10-27 23:44:30', '2023-10-27 23:44:30', 'voyager.menus.index', NULL),
-(7, 1, 'Database', '', '_self', 'voyager-data', NULL, 5, 11, '2023-10-27 23:44:31', '2023-10-27 23:44:31', 'voyager.database.index', NULL),
-(8, 1, 'Compass', '', '_self', 'voyager-compass', NULL, 5, 12, '2023-10-27 23:44:31', '2023-10-27 23:44:31', 'voyager.compass.index', NULL),
-(9, 1, 'BREAD', '', '_self', 'voyager-bread', NULL, 5, 13, '2023-10-27 23:44:31', '2023-10-27 23:44:31', 'voyager.bread.index', NULL),
-(10, 1, 'Settings', '', '_self', 'voyager-settings', NULL, NULL, 14, '2023-10-27 23:44:31', '2023-10-27 23:44:31', 'voyager.settings.index', NULL),
-(11, 1, 'Categories', '', '_self', 'voyager-categories', NULL, NULL, 8, '2023-10-27 23:44:31', '2023-10-27 23:44:31', 'voyager.categories.index', NULL),
-(12, 1, 'Posts', '', '_self', 'voyager-news', NULL, NULL, 6, '2023-10-27 23:44:31', '2023-10-27 23:44:31', 'voyager.posts.index', NULL),
-(13, 1, 'Pages', '', '_self', 'voyager-file-text', NULL, NULL, 7, '2023-10-27 23:44:31', '2023-10-27 23:44:31', 'voyager.pages.index', NULL);
+(2, 1, 'Media', '', '_self', 'voyager-images', NULL, NULL, 2, '2023-10-27 23:44:30', '2023-10-30 03:09:25', 'voyager.media.index', NULL),
+(3, 1, 'Tài khoản quản trị', '', '_self', NULL, '#000000', 15, 2, '2023-10-27 23:44:30', '2023-10-30 03:10:17', 'voyager.users.index', 'null'),
+(4, 1, 'Quyền', '', '_self', NULL, '#000000', 15, 1, '2023-10-27 23:44:30', '2023-10-30 03:10:05', 'voyager.roles.index', 'null'),
+(5, 1, 'Tools', '', '_self', 'voyager-tools', NULL, NULL, 5, '2023-10-27 23:44:30', '2023-10-30 03:11:20', NULL, NULL),
+(6, 1, 'Menu Builder', '', '_self', 'voyager-list', NULL, 5, 1, '2023-10-27 23:44:30', '2023-10-30 03:08:01', 'voyager.menus.index', NULL),
+(7, 1, 'Database', '', '_self', 'voyager-data', NULL, 5, 2, '2023-10-27 23:44:31', '2023-10-30 03:08:01', 'voyager.database.index', NULL),
+(8, 1, 'Compass', '', '_self', 'voyager-compass', NULL, 5, 3, '2023-10-27 23:44:31', '2023-10-30 03:08:01', 'voyager.compass.index', NULL),
+(9, 1, 'BREAD', '', '_self', 'voyager-bread', NULL, 5, 4, '2023-10-27 23:44:31', '2023-10-30 03:08:01', 'voyager.bread.index', NULL),
+(10, 1, 'Cấu hình', '', '_self', 'voyager-settings', '#000000', NULL, 6, '2023-10-27 23:44:31', '2023-10-30 03:09:55', 'voyager.settings.index', 'null'),
+(11, 1, 'Danh mục bài viết', '', '_self', NULL, '#000000', 14, 1, '2023-10-27 23:44:31', '2023-10-30 03:08:25', 'voyager.categories.index', 'null'),
+(12, 1, 'Bài viết', '', '_self', NULL, '#000000', 14, 2, '2023-10-27 23:44:31', '2023-10-30 03:08:13', 'voyager.posts.index', 'null'),
+(13, 1, 'Trang', '', '_self', NULL, '#000000', 14, 3, '2023-10-27 23:44:31', '2023-10-30 03:08:29', 'voyager.pages.index', 'null'),
+(14, 1, 'Nội dung', '', '_self', 'voyager-news', '#000000', NULL, 3, '2023-10-30 03:07:55', '2023-10-30 03:09:25', NULL, ''),
+(15, 1, 'Quản trị', '', '_self', 'voyager-lock', '#000000', NULL, 4, '2023-10-30 03:09:15', '2023-10-30 03:11:20', NULL, ''),
+(16, 1, 'Danh mục sản phẩm', '', '_self', 'voyager-shop', NULL, NULL, 7, '2023-10-30 03:14:00', '2023-10-30 03:14:00', 'voyager.collections.index', NULL),
+(17, 1, 'Products', '', '_self', 'voyager-hotdog', NULL, NULL, 8, '2023-10-30 03:19:40', '2023-10-30 03:19:40', 'voyager.products.index', NULL);
 
 -- --------------------------------------------------------
 
@@ -427,7 +453,17 @@ INSERT INTO `permissions` (`id`, `key`, `table_name`, `created_at`, `updated_at`
 (37, 'read_pages', 'pages', '2023-10-27 23:44:31', '2023-10-27 23:44:31'),
 (38, 'edit_pages', 'pages', '2023-10-27 23:44:31', '2023-10-27 23:44:31'),
 (39, 'add_pages', 'pages', '2023-10-27 23:44:31', '2023-10-27 23:44:31'),
-(40, 'delete_pages', 'pages', '2023-10-27 23:44:31', '2023-10-27 23:44:31');
+(40, 'delete_pages', 'pages', '2023-10-27 23:44:31', '2023-10-27 23:44:31'),
+(41, 'browse_collections', 'collections', '2023-10-30 03:14:00', '2023-10-30 03:14:00'),
+(42, 'read_collections', 'collections', '2023-10-30 03:14:00', '2023-10-30 03:14:00'),
+(43, 'edit_collections', 'collections', '2023-10-30 03:14:00', '2023-10-30 03:14:00'),
+(44, 'add_collections', 'collections', '2023-10-30 03:14:00', '2023-10-30 03:14:00'),
+(45, 'delete_collections', 'collections', '2023-10-30 03:14:00', '2023-10-30 03:14:00'),
+(46, 'browse_products', 'products', '2023-10-30 03:19:40', '2023-10-30 03:19:40'),
+(47, 'read_products', 'products', '2023-10-30 03:19:40', '2023-10-30 03:19:40'),
+(48, 'edit_products', 'products', '2023-10-30 03:19:40', '2023-10-30 03:19:40'),
+(49, 'add_products', 'products', '2023-10-30 03:19:40', '2023-10-30 03:19:40'),
+(50, 'delete_products', 'products', '2023-10-30 03:19:40', '2023-10-30 03:19:40');
 
 -- --------------------------------------------------------
 
@@ -484,7 +520,17 @@ INSERT INTO `permission_role` (`permission_id`, `role_id`) VALUES
 (37, 1),
 (38, 1),
 (39, 1),
-(40, 1);
+(40, 1),
+(41, 1),
+(42, 1),
+(43, 1),
+(44, 1),
+(45, 1),
+(46, 1),
+(47, 1),
+(48, 1),
+(49, 1),
+(50, 1);
 
 -- --------------------------------------------------------
 
@@ -502,6 +548,30 @@ CREATE TABLE `personal_access_tokens` (
   `last_used_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pivot_product_collection`
+--
+
+CREATE TABLE `pivot_product_collection` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `collection_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pivot_tag_product`
+--
+
+CREATE TABLE `pivot_tag_product` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `tag_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -615,6 +685,19 @@ INSERT INTO `settings` (`id`, `key`, `display_name`, `value`, `details`, `type`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tags`
+--
+
+CREATE TABLE `tags` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `translations`
 --
 
@@ -663,7 +746,38 @@ INSERT INTO `translations` (`id`, `table_name`, `column_name`, `foreign_key`, `l
 (27, 'menu_items', 'title', 5, 'pt', 'Ferramentas', '2023-10-27 23:44:31', '2023-10-27 23:44:31'),
 (28, 'menu_items', 'title', 6, 'pt', 'Menus', '2023-10-27 23:44:31', '2023-10-27 23:44:31'),
 (29, 'menu_items', 'title', 7, 'pt', 'Base de dados', '2023-10-27 23:44:31', '2023-10-27 23:44:31'),
-(30, 'menu_items', 'title', 10, 'pt', 'Configurações', '2023-10-27 23:44:31', '2023-10-27 23:44:31');
+(30, 'menu_items', 'title', 10, 'pt', 'Configurações', '2023-10-27 23:44:31', '2023-10-27 23:44:31'),
+(31, 'menu_items', 'title', 12, 'en', 'Posts', '2023-10-30 03:02:57', '2023-10-30 03:02:57'),
+(32, 'menu_items', 'title', 11, 'en', 'Categories', '2023-10-30 03:06:04', '2023-10-30 03:06:04'),
+(33, 'menu_items', 'title', 13, 'en', 'Pages', '2023-10-30 03:06:42', '2023-10-30 03:06:42'),
+(34, 'menu_items', 'title', 14, 'en', 'Nội dung', '2023-10-30 03:08:20', '2023-10-30 03:08:20'),
+(35, 'menu_items', 'title', 4, 'en', 'Roles', '2023-10-30 03:09:29', '2023-10-30 03:09:29'),
+(36, 'menu_items', 'title', 3, 'en', 'Users', '2023-10-30 03:09:35', '2023-10-30 03:09:35'),
+(37, 'menu_items', 'title', 10, 'en', 'Settings', '2023-10-30 03:09:55', '2023-10-30 03:09:55'),
+(38, 'menu_items', 'title', 15, 'en', 'Quản trị', '2023-10-30 03:10:41', '2023-10-30 03:10:41'),
+(39, 'data_rows', 'display_name', 56, 'en', 'Id', '2023-10-30 03:14:33', '2023-10-30 03:14:33'),
+(40, 'data_rows', 'display_name', 57, 'en', 'Tiêu đề', '2023-10-30 03:14:33', '2023-10-30 03:14:33'),
+(41, 'data_rows', 'display_name', 58, 'en', 'Slug', '2023-10-30 03:14:33', '2023-10-30 03:14:33'),
+(42, 'data_rows', 'display_name', 60, 'en', 'Created At', '2023-10-30 03:14:33', '2023-10-30 03:14:33'),
+(43, 'data_rows', 'display_name', 61, 'en', 'Updated At', '2023-10-30 03:14:33', '2023-10-30 03:14:33'),
+(44, 'data_types', 'display_name_singular', 7, 'en', 'Danh mục sản phẩm', '2023-10-30 03:14:33', '2023-10-30 03:14:33'),
+(45, 'data_types', 'display_name_plural', 7, 'en', 'Danh mục sản phẩm', '2023-10-30 03:14:33', '2023-10-30 03:14:33'),
+(46, 'data_rows', 'display_name', 62, 'en', 'Mô tả', '2023-10-30 03:15:09', '2023-10-30 03:15:09'),
+(47, 'data_rows', 'display_name', 63, 'en', 'Ảnh', '2023-10-30 03:16:17', '2023-10-30 03:16:17'),
+(48, 'data_rows', 'display_name', 64, 'en', 'Id', '2023-10-30 03:21:45', '2023-10-30 03:21:45'),
+(49, 'data_rows', 'display_name', 65, 'en', 'Tên sản phẩm', '2023-10-30 03:21:45', '2023-10-30 03:21:45'),
+(50, 'data_rows', 'display_name', 66, 'en', 'Slug', '2023-10-30 03:21:45', '2023-10-30 03:21:45'),
+(51, 'data_rows', 'display_name', 67, 'en', 'Mô tả', '2023-10-30 03:21:45', '2023-10-30 03:21:45'),
+(52, 'data_rows', 'display_name', 68, 'en', 'Ảnh', '2023-10-30 03:21:45', '2023-10-30 03:21:45'),
+(53, 'data_rows', 'display_name', 69, 'en', 'Giá', '2023-10-30 03:21:45', '2023-10-30 03:21:45'),
+(54, 'data_rows', 'display_name', 70, 'en', 'Giá gốc (để cao hơn giá)', '2023-10-30 03:21:45', '2023-10-30 03:21:45'),
+(55, 'data_rows', 'display_name', 71, 'en', 'Status', '2023-10-30 03:21:45', '2023-10-30 03:21:45'),
+(56, 'data_rows', 'display_name', 72, 'en', 'Created At', '2023-10-30 03:21:45', '2023-10-30 03:21:45'),
+(57, 'data_rows', 'display_name', 73, 'en', 'Updated At', '2023-10-30 03:21:45', '2023-10-30 03:21:45'),
+(58, 'data_rows', 'display_name', 74, 'en', 'collections', '2023-10-30 03:21:45', '2023-10-30 03:21:45'),
+(59, 'data_types', 'display_name_singular', 8, 'en', 'Product', '2023-10-30 03:21:45', '2023-10-30 03:21:45'),
+(60, 'data_types', 'display_name_plural', 8, 'en', 'Products', '2023-10-30 03:21:45', '2023-10-30 03:21:45'),
+(61, 'data_rows', 'display_name', 75, 'en', 'tags', '2023-10-30 03:23:09', '2023-10-30 03:23:09');
 
 -- --------------------------------------------------------
 
@@ -690,7 +804,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `role_id`, `name`, `email`, `avatar`, `email_verified_at`, `password`, `remember_token`, `settings`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Admin', 'admin@admin.com', 'users/default.png', NULL, '$2y$10$8Y9QUOM35G1Zo0n.6PpI7eulmdl0TvG1DePr0PbuM.vZcOSd/PApm', 'cYDzfaNeLGsC10hVS3Pki4E1RFN09aVQhEl08tpD5C1d1C3bGhYDjTisVfV4', '{\"locale\":\"vi\"}', '2023-10-27 23:44:31', '2023-10-27 23:59:55');
+(1, 1, 'Admin', 'admin@admin.com', 'users/default.png', NULL, '$2y$10$8Y9QUOM35G1Zo0n.6PpI7eulmdl0TvG1DePr0PbuM.vZcOSd/PApm', 'cYDzfaNeLGsC10hVS3Pki4E1RFN09aVQhEl08tpD5C1d1C3bGhYDjTisVfV4', '{\"locale\":\"vi\"}', '2023-10-27 23:44:31', '2023-10-30 03:02:29');
 
 -- --------------------------------------------------------
 
@@ -807,6 +921,18 @@ ALTER TABLE `personal_access_tokens`
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
 
 --
+-- Indexes for table `pivot_product_collection`
+--
+ALTER TABLE `pivot_product_collection`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `pivot_tag_product`
+--
+ALTER TABLE `pivot_tag_product`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `posts`
 --
 ALTER TABLE `posts`
@@ -832,6 +958,12 @@ ALTER TABLE `roles`
 ALTER TABLE `settings`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `settings_key_unique` (`key`);
+
+--
+-- Indexes for table `tags`
+--
+ALTER TABLE `tags`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `translations`
@@ -882,13 +1014,13 @@ ALTER TABLE `collections`
 -- AUTO_INCREMENT for table `data_rows`
 --
 ALTER TABLE `data_rows`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 
 --
 -- AUTO_INCREMENT for table `data_types`
 --
 ALTER TABLE `data_types`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -906,7 +1038,7 @@ ALTER TABLE `menus`
 -- AUTO_INCREMENT for table `menu_items`
 --
 ALTER TABLE `menu_items`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -924,13 +1056,25 @@ ALTER TABLE `pages`
 -- AUTO_INCREMENT for table `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `pivot_product_collection`
+--
+ALTER TABLE `pivot_product_collection`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `pivot_tag_product`
+--
+ALTER TABLE `pivot_tag_product`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `posts`
@@ -957,10 +1101,16 @@ ALTER TABLE `settings`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
+-- AUTO_INCREMENT for table `tags`
+--
+ALTER TABLE `tags`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `translations`
 --
 ALTER TABLE `translations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `users`

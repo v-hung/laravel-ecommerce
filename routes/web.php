@@ -22,10 +22,10 @@ use TCG\Voyager\Facades\Voyager;
 |
 */
 
-Route::get('/', [HomeController::class, 'home']);
-Route::get('/about', [HomeController::class, 'about']);
-Route::get('/contact', [HomeController::class, 'contact']);
-Route::get('/feedback', [HomeController::class, 'feedback']);
+Route::get('/', [HomeController::class, 'home'])->name('home');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+Route::get('/feedback', [HomeController::class, 'feedback'])->name('feedback');
 
 Route::get('/shop', [ShopController::class, 'shop']);
 Route::get('/search', [ShopController::class, 'shop']);
@@ -38,7 +38,7 @@ Route::get('/blogs/{blogSlug}', [BlogController::class, 'blogDetail']);
 Route::get('/blogs/{blogSlug}/{slug}', [BlogController::class, 'postDetail']);
 Route::get('/posts/{slug}', [BlogController::class, 'postDetail']);
 
-Route::get('/pages', [PageController::class, 'pages']);
+// Route::get('/pages', [PageController::class, 'pages']);
 Route::get('/pages/{slug}', [PageController::class, 'pageDetail']);
 
 // account
